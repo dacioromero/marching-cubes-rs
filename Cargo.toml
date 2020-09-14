@@ -1,0 +1,12 @@
+[package]
+name = "marching-cubes"
+version = "0.1.0"
+authors = ["Dacio Romero <dacioromero@gmail.com>"]
+edition = "2018"
+
+[lib]
+name = "marching_cubes"
+crate-type = ["lib", "dylib"]
+
+[dependencies]
+euclid = "^0.20.0"
