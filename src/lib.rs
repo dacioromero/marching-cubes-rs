@@ -29,11 +29,27 @@ impl ops::Add<Vector3> for Triangle {
     }
 }
 
+impl ops::AddAssign<Vector3> for Triangle {
+    fn add_assign(&mut self, v: Vector3) {
+        self.p1 += v;
+        self.p2 += v;
+        self.p3 += v;
+    }
+}
+
 impl ops::Sub<Vector3> for Triangle {
     type Output = Triangle;
 
     fn sub(self, v: Vector3) -> Triangle {
         Triangle::new(self.p1 - v, self.p2 - v, self.p3)
+    }
+}
+
+impl ops::SubAssign<Vector3> for Triangle {
+    fn sub_assign(&mut self, v: Vector3) {
+        self.p1 -= v;
+        self.p2 -= v;
+        self.p3 -= v;
     }
 }
 
