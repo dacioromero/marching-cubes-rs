@@ -1,87 +1,12 @@
 // Adapted from http://paulbourke.net/geometry/polygonise/, retrieved September 2020
+use euclid::default::Vector3D;
 use std::convert::TryInto;
-use std::ops;
 use std::slice;
 
 // https://github.com/godot-rust/godot-rust/blob/e4bd55421ce505481bb23e701bd309ea235d6aa2/gdnative-core/src/core_types/geom/mod.rs#L8
 // gdnative-core
-pub type Vector3 = euclid::default::Vector3D<f32>;
-
-#[derive(Debug, Copy, Clone)]
-#[repr(C)]
-pub struct Triangle {
-    pub p1: Vector3,
-    pub p2: Vector3,
-    pub p3: Vector3,
-}
-
-impl Triangle {
-    pub const fn new(p1: Vector3, p2: Vector3, p3: Vector3) -> Self {
-        Self { p1, p2, p3 }
-    }
-}
-
-impl ops::Add<Vector3> for Triangle {
-    type Output = Triangle;
-
-    fn add(self, v: Vector3) -> Triangle {
-        Triangle::new(self.p1 + v, self.p2 + v, self.p3 + v)
-    }
-}
-
-impl ops::AddAssign<Vector3> for Triangle {
-    fn add_assign(&mut self, v: Vector3) {
-        self.p1 += v;
-        self.p2 += v;
-        self.p3 += v;
-    }
-}
-
-impl ops::Sub<Vector3> for Triangle {
-    type Output = Triangle;
-
-    fn sub(self, v: Vector3) -> Triangle {
-        Triangle::new(self.p1 - v, self.p2 - v, self.p3)
-    }
-}
-
-impl ops::SubAssign<Vector3> for Triangle {
-    fn sub_assign(&mut self, v: Vector3) {
-        self.p1 -= v;
-        self.p2 -= v;
-        self.p3 -= v;
-    }
-}
-
-// https://stackoverflow.com/a/30220832/10336544
-impl IntoIterator for Triangle {
-    type Item = Vector3;
-    type IntoIter = TriangleIterator;
-
-    fn into_iter(self) -> TriangleIterator {
-        TriangleIterator { t: self, i: 0 }
-    }
-}
-
-pub struct TriangleIterator {
-    t: Triangle,
-    i: usize,
-}
-
-impl Iterator for TriangleIterator {
-    type Item = Vector3;
-    fn next(&mut self) -> Option<Vector3> {
-        let result = match self.i {
-            0 => self.t.p1,
-            1 => self.t.p2,
-            2 => self.t.p3,
-            _ => return None,
-        };
-        self.i += 1;
-
-        Some(result)
-    }
-}
+pub type Vector3 = Vector3D<f32>;
+pub type Triangle = Vector3D<Vector3>;
 
 pub static POINTS: [Vector3; 8] = [
     Vector3::new(0., 0., 0.),
