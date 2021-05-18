@@ -9,4 +9,4 @@ name = "marching_cubes"
 crate-type = ["lib", "dylib"]
 
 [dependencies]
-euclid = "^0.20.0"
+euclid = "0.x"
